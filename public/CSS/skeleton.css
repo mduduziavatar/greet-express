@@ -1,0 +1,20 @@
+.main-body {
+    background: cyan
+}
+
+html {
+    height: 100%;
+    text-align: center;
+}
+
+#inputElement {
+    text-align: left;
+    border: none;
+    height: 50px;
+    width: 200px;
+    border-radius: 1em;
+}
+
+.label-radio-container {
+    padding: 10px;
+}
