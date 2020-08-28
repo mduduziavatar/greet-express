@@ -34,6 +34,7 @@ module.exports = function greetFactory(stored) {
             return name;
         }
         return "";
+        z
     }
 
     function getAllUsers() {

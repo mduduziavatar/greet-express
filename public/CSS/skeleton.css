@@ -1,5 +1,23 @@
+body {
+    background-color: yellowgreen;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    padding: 1em;
+    margin: 0.5em;
+}
+
+.parts {
+    display: flex;
+    margin-right: 2em;
+}
+
+.parts div {
+    flex: 1;
+}
+
 .main-body {
-    background: cyan
+    background: dodgerblue;
+    padding: 1em;
 }
 
 html {
@@ -7,14 +25,30 @@ html {
     text-align: center;
 }
 
-#inputElement {
-    text-align: left;
-    border: none;
-    height: 50px;
-    width: 200px;
-    border-radius: 1em;
+button {
+    height: 30px;
+    width: 70px;
+    border-radius: 0.3em;
+    margin: 0.5em;
+}
+
+.inputElements {
+    padding: 1em;
+    border-radius: 0.5em;
+    font-size: 1em;
+    background-color: yellow;
+}
+
+.greetButton {
+    background-color: darkgreen;
+    font-size: 1em;
+}
+
+.resetButton {
+    background-color: orangered;
+    font-size: 1em;
 }
 
 .label-radio-container {
-    padding: 10px;
+    padding: 20px;
 }
