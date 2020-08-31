@@ -1,22 +1,27 @@
 <div class="main-body">
     <h2>Greetings Language Converter App (GLCA)</h2>
     <form action="/greet" method="POST">
-    <input type="text" name="textitem" class="inputElements" placeholder="Enter your name here" value="{{textBoxValue.textitem}}">
-    <h1 name="counter"></h1>
-    <div class="label-radio-container">
+        <input type="text" name="textitem" class="inputElements" placeholder="Enter your name here"
+            value="{{textBoxValue.textitem}}">
+        <h1 name="counter"></h1>
+        <div>
+            <p>{{counter}}</p>
+        </div>
         <label>
-                <input type="radio" name="selector" value="english">English
-            </label>
+            <input type="radio" name="selector" value="english">English
+        </label>
         <label>
-                <input type="radio" name="selector" value="sesotho">Sesotho
-            </label>
+            <input type="radio" name="selector" value="sesotho">Sesotho
+        </label>
         <label>
-                <input type="radio" name="selector" value="zulu">Zulu
-            </label>
-    </div>
-    <button class="greetButton" type="submit" name="button">greet</button>
-    <h1 id="txtBox"></h1>
+            <input type="radio" name="selector" value="zulu">Zulu
+        </label>
+</div>
+<button class="greetButton" type="submit" name="button">greet</button>
+<h1 id="txtBox">
+    <p>{{txtBox}}</p>
+</h1>
 
-    <button class="resetButton" type="reset" name="button">reset</button>
-    </form>
+<button class="resetButton" type="reset" name="button">reset</button>
+</form>
 </div>

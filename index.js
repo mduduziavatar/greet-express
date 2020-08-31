@@ -16,19 +16,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.get("/", function(req, res) {
-    res.render('index', {
-        name: req.body.textitem
-    });
+app.get('/', function(req, res) {
+    res.render('index', );
 });
 
 app.post("/greet", function(req, res) {
-    greetFactory.getNameFromInput(
+    const item = req.body.textitem
+    const language = req.body.selector
+    const greetedUsers = greetFactory.greetUser(item, language)
+
+    greetFactory.greetUser(
         req.body.textitem
     );
-    console.log(greetFactory.getNameFromInput());
+
+    greetFactory.greetUser(req.body.textitem)
+    console.log(req.body);
     // note that data can be sent to the template
-    res.redirect("/");
+    res.render('index', {
+        txtBox: greetedUsers
+    });
 });
 
 

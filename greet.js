@@ -2,8 +2,12 @@ module.exports = function greetFactory(stored) {
 
     var userMappedData = stored || {};
 
-    function greetUser(name, language) {
-        addedUser(name);
+    function greetUser(item, language) {
+        var regularExpression = /[^A-Za-z]/g;
+        var lettersOnly = item.replace(regularExpression, "")
+        var name = lettersOnly.charAt(0).toUpperCase() + lettersOnly.slice(1).toLowerCase()
+
+        addedUser(item);
         switch (language) {
             case "english":
                 return "Hello, " + name;
@@ -19,7 +23,10 @@ module.exports = function greetFactory(stored) {
     function addedUser(userName) {
         if (userMappedData[userName] === undefined) {
             userMappedData[userName] = 0;
+        } else {
+            userMappedData[userName]++;
         }
+        return userMappedData[userName]
     }
 
     function getGreetCounter() {
@@ -27,10 +34,10 @@ module.exports = function greetFactory(stored) {
     }
 
     function getNameFromInput(textBoxValue) {
-        var regularExpression = /[^A-Za-z]/g;
+
         if (textBoxValue !== "") {
-            var lettersOnly = textBoxValue.replace(regularExpression, "")
-            var name = lettersOnly.charAt(0).toUpperCase() + lettersOnly.slice(1).toLowerCase()
+
+
             return name;
         }
         return "";
@@ -53,6 +60,7 @@ module.exports = function greetFactory(stored) {
         getGreetCounter,
         getNameFromInput,
         getAllUsers,
-        resetBtn
+        resetBtn,
+        addedUser
     }
 }
