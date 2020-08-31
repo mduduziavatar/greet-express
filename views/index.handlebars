@@ -7,6 +7,12 @@
         <div>
             <p>{{counter}}</p>
         </div>
+        <div>
+            <p>{{#if messages}}
+                {{messages.index}}
+                {{/if}}
+            </p>
+        </div>
         <label>
             <input type="radio" name="selector" value="english">English
         </label>
