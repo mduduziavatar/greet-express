@@ -23,25 +23,11 @@ module.exports = function greetFactory(stored) {
     function addedUser(userName) {
         if (userMappedData[userName] === undefined) {
             userMappedData[userName] = 0;
-        } else {
-            userMappedData[userName]++;
         }
-        return userMappedData[userName]
     }
 
     function getGreetCounter() {
         return Object.keys(userMappedData).length;
-    }
-
-    function getNameFromInput(textBoxValue) {
-
-        if (textBoxValue !== "") {
-
-
-            return name;
-        }
-        return "";
-        z
     }
 
     function getAllUsers() {
@@ -53,11 +39,9 @@ module.exports = function greetFactory(stored) {
         userMappedData = {};
     }
 
-
     return {
         greetUser,
         getGreetCounter,
-        getNameFromInput,
         getAllUsers,
         resetBtn,
         addedUser

@@ -42,11 +42,6 @@ app.post("/greet", function(req, res) {
     });
 });
 
-app.post("/reset", function(req, res) {
-    greetFactory.resetBtn()
-    res.redirect("/");
-})
-
 app.listen(PORT, function() {
     console.log('App starting on port', PORT);
 });
