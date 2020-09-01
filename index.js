@@ -5,15 +5,12 @@ const GreetFactoryFunction = require('./greet');
 const app = express();
 const greetFactory = GreetFactoryFunction();
 const PORT = process.env.PORT || 3008;
-
+// app flash setups 
+const flash = require('express-flash');
+const session = require('express-session')
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
-// app flash setups 
-var flash = require('express-flash');
-var session = require('express-session')
-
-// app.use(express.cookieParser('keyboard cat'));
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
@@ -25,33 +22,30 @@ app.use(flash());
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-
+//sending back home
 app.get('/', function(req, res) {
     res.render('index', );
 });
-
+//greet app setup
 app.post("/greet", function(req, res) {
-
     const item = req.body.textitem
     const language = req.body.selector
-
-
-    if (item == "") {
-        req.flash('index', 'please enter');
+    const greetedUsers = greetFactory.greetUser(item, language)
+    if (item === "") {
+        req.flash('errors', 'please enter a name and select a language');
     }
-
-
-    // const greetedUsers = greetFactory.greetUser(item, language)
-    // greetFactory.greetUser(
-    //     req.body.textitem
-    // )
-    // console.log(req.body);
-    // // note that data can be sent to the template
+    const count = greetFactory.getGreetCounter(req.body);
+    console.log(greetedUsers);
     res.render('index', {
-
+        txtBox: greetedUsers,
+        counter: count
     });
 });
 
+app.post("/reset", function(req, res) {
+    greetFactory.resetBtn()
+    res.redirect("/");
+})
 
 app.listen(PORT, function() {
     console.log('App starting on port', PORT);

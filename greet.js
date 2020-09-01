@@ -16,7 +16,7 @@ module.exports = function greetFactory(stored) {
             case "sesotho":
                 return "Dumela, " + name;
             default:
-                return "Hello, " + name;
+                return ""
         }
     }
 
@@ -51,7 +51,6 @@ module.exports = function greetFactory(stored) {
 
     function resetBtn() {
         userMappedData = {};
-        localStorage.clear("greetedUsers");
     }
 
 
