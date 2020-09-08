@@ -27,4 +27,34 @@
 </h1>
 <button class="resetButton" type="reset" name="button">reset</button>
 </form>
+<div>
+    <h4 class="">greeted for</h4>
+    <div class="">
+        <form action="/filter" method="POST">
+            <strong>Filter:</strong>
+            <input class="" type="radio" name="daysFilter" value="all"> All
+            <input class="" type="radio" name="daysFilter" value="three"> 3 times or less
+            <input class="" type="radio" name="daysFilter" value="more"> More 3 times
+            <input class="" type="submit" value="Filter">
+        </form>
+    </div>
+    <table class="">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>counter</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each kittens}}
+            <tr>
+                <th scope="row">{{id}}</th>
+                <td>{{name}}</td>
+                <td>{{counter}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
 </div>
