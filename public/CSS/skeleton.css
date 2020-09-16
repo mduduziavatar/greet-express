@@ -6,6 +6,14 @@ body {
     margin: 0.5em;
 }
 
+
+/* a different way of using css to display background
+.angled-gradient{
+    background: linear-gradient(0deg red, yellow);
+    background-repeat: no-repeat;
+    height: 100%;
+} */
+
 .parts {
     display: flex;
     margin-right: 2em;
