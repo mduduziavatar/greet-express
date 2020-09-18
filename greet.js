@@ -6,22 +6,11 @@ module.exports = function greetFactory() {
         connectionString
     });
 
-    var userMappedData = {};
+    async function greetUser(name, language) {
 
-    async function greetUser(item, language) {
-        var regularExpression = /[^A-Za-z]/g;
-        var lettersOnly = item.replace(regularExpression, "")
-        var name = lettersOnly.charAt(0).toUpperCase() + lettersOnly.slice(1).toLowerCase()
-        if (await verifyUser(name)) {
-            await setCounterForUsers(name)
-        } else {
-            await addToDatabase(name)
-        }
-        // addedUser(name);
         switch (language) {
             case "english":
                 return "Hello, " + name;
-
             case "zulu":
                 return "Sawubona, " + name;
             case "sesotho":
@@ -32,55 +21,31 @@ module.exports = function greetFactory() {
     }
 
     async function addToDatabase(name) {
-        await pool.query(`insert into greetings(name, counter) values ($1, $2)`, [name, 0]);
-    }
-
-    async function verifyUser(item) {
-        const working = await pool.query(`select * from greetings where name = $1`, [item]);
-        // incrementing rows everytime new user is added 
-        if (working.rowCount == 0) {
-            return false
-        } else {
-            return true
+        var regularExpression = /[^A-Za-z]/g;
+        var lettersOnly = name.replace(regularExpression, "")
+        var item = lettersOnly.charAt(0).toUpperCase() + lettersOnly.slice(1).toLowerCase()
+        const checker = await pool.query(`select id from greetings where name = $1`, [item])
+        if (checker.rowCount === 0) {
+            await pool.query(`insert into greetings (name, counter) values ($1, 0)`, [item]);
         }
+        await pool.query(`update greetings set counter = counter+1 where name = $1`, [item])
     }
 
-    async function setCounterForUsers(item) {
-        const count = await getCounterForUsers(item) + 1;
-        await pool.query(`update greetings set counter = ${count} where name = $1`, [item]);
-    }
-
-    async function getCounterForUsers(item) {
-        const count = await pool.query(`select * from greetings where name = $1`, [item]);
-        return count.rows[0].counter
-    }
-
-    function getGreetCounter() {
-        return Object.keys(userMappedData).length;
+    async function getGreetCounter() {
+        const count = await pool.query(`select count(*) as count from greetings`)
+        return count.rows[0].count;
     }
 
     async function getAllUsers() {
-        // this is for local storage
-        const hello = await pool.query(`
-                    select id, name, counter as "counter"
-                    from greetings `);
+        // this is for db 
+        const hello = await pool.query(`select name from greet`);
         return hello.rows;
-        //return userMappedData;
-    }
-
-    function resetBtn() {
-        userMappedData = {};
     }
 
     return {
-        getCounterForUsers,
-        verifyUser,
         getAllUsers,
         addToDatabase,
-        setCounterForUsers,
         greetUser,
-        getGreetCounter,
-        getAllUsers,
-        resetBtn,
+        getGreetCounter
     }
 }

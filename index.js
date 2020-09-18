@@ -4,12 +4,6 @@ const bodyParser = require('body-parser');
 const GreetFactoryFunction = require('./greet');
 const app = express();
 const greetFactory = GreetFactoryFunction();
-const pg = require("pg");
-const Pool = pg.Pool;
-const connectionString = process.env.DATABASE_URL || 'postgresql://mdu:pg123@localhost:5432/greetings';
-const pool = new Pool({
-    connectionString
-});
 const PORT = process.env.PORT || 3008;
 // app flash setups 
 const flash = require('express-flash');
@@ -30,27 +24,35 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //sending back home
 app.get('/', async function(req, res) {
-    res.render('index', { counter: await greetFactory.getCounterForUsers });
+    res.render('index');
 });
 
-// app.get("/api/greetings", async function(req, res) {
-//     const hello = await greetFactory.greetUser();
-//     res.send(hello);
-// });
 //greet app setup
 app.post("/greet", async function(req, res) {
-    const item = req.body.textitem
+    const name = req.body.textItem;
     const language = req.body.selector
-    const greetedUsers = greetFactory.greetUser(item, language)
-    if (item === "") {
-        req.flash('errors', 'please enter a name and select a language');
+    const greetedUsers = greetFactory.greetUser(name, language)
+    await greetFactory.addToDatabase(name)
+    const count = greetFactory.getGreetCounter();
+    if (name === "" && language === undefined) {
+        req.flash("errors", "please enter a name and select a language ");
+    } else if (name === "") {
+        req.flash("errors", "please enter a name!")
+    } else if (language === undefined) {
+        req.flash("errors", "please select a language ")
     }
-    const count = greetFactory.getGreetCounter(req.body);
+
     console.log(greetedUsers);
     res.render('index', {
         txtBox: await greetedUsers,
         counter: await count
     });
+});
+
+app.post("/data", function(req, res) {
+    settingsBill.addFunction(req.body.billItemTypeWithSettings)
+    console.log(settingsBill.getColorLive());
+    res.redirect("/");
 });
 
 app.listen(PORT, function() {

@@ -1,4 +1,4 @@
-{{#each item}}
+{{#each datas}}
 <div class="item-name">
 <a href="/counted/ {{this.name}}"> {{this.name}}</a>
 </div>
@@ -7,3 +7,23 @@
 <form action="/" method="get">
 <button >Home</button>
 </form>
+
+<div class="main-body">
+    <h1>Actions</h1>
+
+    <table>
+        <tr>
+        <th>Type</th>
+        <th>Price</th>
+        <th>When</th>
+        </tr>
+        {{#each actions}}
+        <tr>
+        <td>{{type}}</td>
+        <td>{{cost}}</td>
+        <td>{{ago}}</td>
+        <td>{{timestamp}}</td>
+        </tr>
+        {{/each}}
+    </table>
+</div>

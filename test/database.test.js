@@ -1,6 +1,8 @@
 const assert = require("assert");
+let GreetFactoryFunction = require('../greet')
+const greetFactory = GreetFactoryFunction();
 
-describe("the greetings_app test", function() {
+describe("the greetings_app database test", function() {
 
     const pg = require("pg");
     const Pool = pg.Pool;
@@ -8,85 +10,66 @@ describe("the greetings_app test", function() {
     const pool = new Pool({
         connectionString
     });
-    const INSERT_QUERY = "insert into greetings (name, counter) values ($1, $2)";
+    const INSERT_QUERY = `insert into greetings (name, counter) values ($1, $2)`;
 
     beforeEach(async function() {
         await pool.query("delete from greetings");
     });
 
-    it("should be able to add names", async function() {
-
-        await pool.query(INSERT_QUERY, ["Mdu", 4]);
-        await pool.query(INSERT_QUERY, ["Siphiwe", 7]);
-
-        const results = await pool.query("select count(*) from greetings");
-
-        // how many bookings should have been added?
-        assert.equal(0, results.rows[0].count);
-
+    it("should be able to greet Mdu once", async function() {
+        const name = "Mdu";
+        const counter = 1;
+        await greetFactory.greetUser(name, counter)
+        await pool.query(INSERT_QUERY, ["Mdu", 1]);
+        const results = await pool.query(`select count( * ) from greetings `);
+        assert.equal(1, results.rows[0].count);
     });
 
-    it("should be able to find all bookings", async function() {
-
-        await pool.query(INSERT_QUERY, ["Snowy", 4, "Wednesday"]);
-        await pool.query(INSERT_QUERY, ["Spotty", 3, "Friday"]);
-        await pool.query(INSERT_QUERY, ["Kitty", 7, "Thursday"]);
-
-        const results = await pool.query("select count(*) from booking");
-
-        // how many bookings should be found?
-        assert.equal(0, results.rows[0].count);
-
+    it("should be able to greet Mdu multiple times", async function() {
+        const name = "Mdu";
+        const counter = 0;
+        await greetFactory.greetUser(name, counter)
+        await pool.query(INSERT_QUERY, ["Mdu", 1]);
+        await pool.query(INSERT_QUERY, ["Mdu", 2]);
+        await pool.query(INSERT_QUERY, ["Mdu", 3]);
+        const results = await pool.query(`select count( * ) from greetings `);
+        assert.equal(3, results.rows[0].count);
     });
 
-    it("should be able to find a booking", async function() {
-
-        await pool.query(INSERT_QUERY, ["Kitty", 7, "Thursday"]);
-
-        const results = await pool.query("select * from booking where name = $1", ["Kitty"]);
-
-        // what fields should have been found in the database?
-        assert.equal("", results.rows[0].name);
-        assert.equal(0, results.rows[0].staying_for);
-        assert.equal("", results.rows[0].arriving_on);
-
+    it("should be able to find a name", async function() {
+        const name = "Mdu";
+        const counter = 0;
+        await greetFactory.greetUser(name, counter)
+        await pool.query(INSERT_QUERY, ["Mdu", 0]);
+        const results = await pool.query(`select * from greetings where name = $1`, ["Mdu"]);
+        assert.equal("Mdu", results.rows[0].name);
     });
 
-    it("should be able to update a booking", async function() {
-
-        await pool.query(INSERT_QUERY, ["Kitty", 7, "Thursday"]);
-
-        let results = await pool.query("select * from booking where name = $1", ["Kitty"]);
-
-        assert.equal("Kitty", results.rows[0].name);
-        assert.equal(7, results.rows[0].staying_for);
-        assert.equal("Thursday", results.rows[0].arriving_on);
-
-        await pool.query("update booking set staying_for = $2  where name = $1", ["Kitty", 5]);
-
-        results = await pool.query("select * from booking where name = $1", ["Kitty"]);
-
-        // what new values should have been found
-        assert.equal("", results.rows[0].name);
-        assert.equal(0, results.rows[0].staying_for);
-        assert.equal("", results.rows[0].arriving_on);
-
+    it("should be able to count", async function() {
+        const name = "Mdu";
+        const counter = 0;
+        await pool.query(INSERT_QUERY, ["Mdu", 3]);
+        const results = await pool.query("select * from greetings where name = $1", ["Mdu"]);
+        assert.equal("Mdu", results.rows[0].name);
+        assert.equal(3, results.rows[0].counter);
     });
 
-
-    it("should be able to find bookings for 5 days or longer", async function() {
-
-        await pool.query(INSERT_QUERY, ["Snowy", 5, "Wednesday"]);
-        await pool.query(INSERT_QUERY, ["Spotty", 3, "Friday"]);
-        await pool.query(INSERT_QUERY, ["Kitty", 7, "Thursday"]);
-
-        const results = await pool.query("select count(*) from booking where staying_for >= 5");
-
-        // how many bookings should be found?
-        assert.equal(0, results.rows[0].count);
-
+    it("should be able to update a counter", async function() {
+        const name = "Mdu";
+        const counter = 7;
+        await greetFactory.getGreetCounter(name, counter)
+        await pool.query(INSERT_QUERY, ["Mdu", 7]);
+        let results = await pool.query("select * from greetings where name = $1", ["Mdu"]);
+        //checking initial values
+        assert.equal("Mdu", results.rows[0].name);
+        assert.equal(7, results.rows[0].counter);
+        //updating to new values
+        await pool.query("update greetings set counter = $2  where name = $1", ["Mdu", 5]);
+        results = await pool.query("select * from greetings where name = $1", ["Mdu"]);
+        //new values should have been found
+        assert.equal("Mdu", results.rows[0].name);
+        assert.equal(5, results.rows[0].counter);
     });
-
     after(function() {
         pool.end();
     })
