@@ -48,6 +48,7 @@ html {
     width: 70px;
     border-radius: 0.3em;
     margin: 0.5em;
+    padding: 1em;
 }
 
 .inputElements {
@@ -69,4 +70,9 @@ html {
 
 .label-radio-container {
     padding: 20px;
+}
+
+.greetedBtn {
+    background-color: rgb(0, 255, 255);
+    font-size: 1em;
 }

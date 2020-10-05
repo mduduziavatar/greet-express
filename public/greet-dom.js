@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(function() {
             errorsElem.innerHTML = "";
         }, 3000);
-        setTimeout(function() {
-            countElem.innerHTML = "";
-        }, 5000);
+        // setTimeout(function() {
+        //     countElem.innerHTML = "";
+        // }, 5000);
         setTimeout(function() {
             textItem.innerHTML = "";
         }, 5000);

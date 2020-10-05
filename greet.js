@@ -38,14 +38,26 @@ module.exports = function greetFactory() {
 
     async function getAllUsers() {
         // this is for db 
-        const hello = await pool.query(`select name from greet`);
+        const hello = await pool.query(`select name from greetings`);
         return hello.rows;
+    }
+
+    async function perPerson(name) {
+        const counter = await pool.query(`select counter from greetings where name = $1`, [name]);
+        return counter.rows[0].counter
+    }
+
+    async function reset() {
+        const reset = await pool.query(`delete from greetings`)
+        return reset.rows
     }
 
     return {
         getAllUsers,
         addToDatabase,
         greetUser,
-        getGreetCounter
+        getGreetCounter,
+        perPerson,
+        reset
     }
 }

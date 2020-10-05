@@ -49,11 +49,41 @@ app.post("/greet", async function(req, res) {
     });
 });
 
-app.post("/data", function(req, res) {
-    settingsBill.addFunction(req.body.billItemTypeWithSettings)
-    console.log(settingsBill.getColorLive());
-    res.redirect("/");
+app.get('/data', async function(req, res) {
+    var name = req.params.name;
+
+    var datar = {
+        name: await greetFactory.getAllUsers(name),
+    }
+
+    res.render('data', datar);
 });
+
+app.get('/counter/:name', async function(req, res) {
+    var name = req.params.name;
+    var count = await greetFactory.perPerson(name)
+    res.render('counter', {
+        name: name,
+        counter: count
+    })
+});
+
+app.get('/reset', async function(req, res) {
+    var reset = await greetFactory.reset()
+    res.render('index')
+});
+
+// app.get('/counter/:name', async function(req, res) {
+
+//     var name = req.params.name;
+
+//     var data = {
+//         name: await greetFactory.greetUser(name),
+//         count: await greet.getGreetCounter(name)
+//     }
+
+//     res.render('counter', data)
+// });
 
 app.listen(PORT, function() {
     console.log('App starting on port', PORT);
