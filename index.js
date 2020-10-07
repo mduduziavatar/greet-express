@@ -52,11 +52,11 @@ app.post("/greet", async function(req, res) {
 app.get('/data', async function(req, res) {
     var name = req.params.name;
 
-    var datar = {
+    var data = {
         name: await greetFactory.getAllUsers(name),
     }
 
-    res.render('data', datar);
+    res.render('data', data);
 });
 
 app.get('/counter/:name', async function(req, res) {
@@ -72,18 +72,6 @@ app.get('/reset', async function(req, res) {
     var reset = await greetFactory.reset()
     res.render('index')
 });
-
-// app.get('/counter/:name', async function(req, res) {
-
-//     var name = req.params.name;
-
-//     var data = {
-//         name: await greetFactory.greetUser(name),
-//         count: await greet.getGreetCounter(name)
-//     }
-
-//     res.render('counter', data)
-// });
 
 app.listen(PORT, function() {
     console.log('App starting on port', PORT);

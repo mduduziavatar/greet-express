@@ -27,11 +27,14 @@
         <p>{{txtBox}}</p>
     </h1>
 </div>
-<button class="resetButton" id="reset" name="button"> <a href="/reset">reset</a></button>
+
 </form>
 <div class="six columns">
     <td class="{{greetedUsers}}"><span class="totalSettings">{{greetedUsers}}</span> </td>
 </div>
 <form class="main" action="/data" method="get">
     <button id="greetedButton" class="greetedBtn">Show Greeted</button>
+</form>
+<form class="main" action="/reset" method="get">
+    <button id="reset" class="resetButton" name="button">reset</button>
 </form>
