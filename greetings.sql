@@ -1,5 +1,5 @@
 create table greetings(
     id serial not null primary key,
-    name text,
+    name text not null,
     counter int
 );
