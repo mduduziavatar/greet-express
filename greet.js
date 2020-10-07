@@ -7,17 +7,24 @@ module.exports = function greetFactory() {
     });
 
     async function greetUser(name, language) {
-
+        var regularExpression = /[^A-Za-z]/g;
+        var lettersOnly = name.replace(regularExpression, "")
+        var item = lettersOnly.charAt(0).toUpperCase() + lettersOnly.slice(1).toLowerCase()
+        if (item === "") {
+            return ""
+        }
         switch (language) {
+
             case "english":
-                return "Hello, " + name;
+                return "Hello, " + item;
             case "zulu":
-                return "Sawubona, " + name;
+                return "Sawubona, " + item;
             case "sesotho":
-                return "Dumela, " + name;
+                return "Dumela, " + item;
             default:
                 return ""
         }
+
     }
 
     async function addToDatabase(name) {
