@@ -1,9 +1,9 @@
 language: node_js
 
-env: DATABASE_URL=postgresql://mdu@localhost:5432/greetings
-
 node_js:
   - "12"
+
+env: DATABASE_URL=postgresql://mdu:pg123@localhost:5432/greetings
 
 before_script:
   - psql -c 'create database greetings;' -U postgres
