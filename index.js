@@ -23,33 +23,36 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 //sending back home
-app.get('/', async function(req, res) {
+app.get('/', async function (req, res) {
     res.render('index');
 });
 
 //greet app setup
-app.post("/greet", async function(req, res) {
+app.post("/greet", async function (req, res) {
     const name = req.body.textItem;
     const language = req.body.selector;
-    const greetedUsers = await greetFactory.greetUser(name, language);
-    await greetFactory.addToDatabase(name);
-    var count = await greetFactory.getGreetCounter(name);
+    const greetedUsers = greetFactory.greetUser(name, language);
     if (name === "" && language === undefined) {
         req.flash("errors", "please enter a name and select a language ");
     } else if (name === "") {
         req.flash("errors", "please enter a name!");
     } else if (language === undefined) {
         req.flash("errors", "please select a language ");
+    } else {
+        await greetFactory.addToDatabase(name);
+        var count = await greetFactory.getGreetCounter(name);
     }
+
+
 
     console.log(greetedUsers);
     res.render('index', {
         txtBox: await greetedUsers,
-        counter: await count
+        counter: count
     });
 });
 
-app.get('/data', async function(req, res) {
+app.get('/data', async function (req, res) {
     var name = req.params.name;
 
     var data = {
@@ -59,7 +62,7 @@ app.get('/data', async function(req, res) {
     res.render('data', data);
 });
 
-app.get('/counter/:name', async function(req, res) {
+app.get('/counter/:name', async function (req, res) {
     var name = req.params.name;
     var count = await greetFactory.perPerson(name)
     res.render('counter', {
@@ -68,11 +71,11 @@ app.get('/counter/:name', async function(req, res) {
     })
 });
 
-app.get('/reset', async function(req, res) {
+app.get('/reset', async function (req, res) {
     var reset = await greetFactory.reset()
     res.render('index')
 });
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
     console.log('App starting on port', PORT);
 });
