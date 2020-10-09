@@ -15,50 +15,50 @@ describe("the greetings_app database test", function() {
         await pool.query("delete from greeting_test");
     });
 
-    it("should be able to greet Mdu once", async function() {
-        const name = "Mdu";
+    it("should be able to greet siphiwe once", async function() {
+        const name = "siphiwe";
         await greetFactory.addToDatabase(name)
-        await pool.query(INSERT_QUERY, ["Mdu"]);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
         const results = await pool.query(`select count( * ) from greeting_test `);
         assert.equal(1, results.rows[0].count);
     });
 
-    it("should be able to greet Mdu multiple times", async function() {
-        const name = "Mdu";
+    it("should be able to greet siphiwe multiple times", async function() {
+        const name = "siphiwe";
         await greetFactory.addToDatabase(name)
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        await pool.query(INSERT_QUERY, ["Mdu"]);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
         const results = await pool.query(`select count( * ) from greeting_test `);
         assert.equal(3, results.rows[0].count);
     });
 
     it("should be able to find a name", async function() {
-        const name = "Mdu";
+        const name = "siphiwe";
         await greetFactory.addToDatabase(name)
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        const results = await pool.query(`select * from greeting_test where name = $1`, ["Mdu"]);
-        assert.equal("Mdu", results.rows[0].name);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        const results = await pool.query(`select * from greeting_test where name = $1`, ["siphiwe"]);
+        assert.equal("siphiwe", results.rows[0].name);
     });
 
     it("should be able to count", async function() {
-        const name = "Mdu";
+        const name = "siphiwe";
         await greetFactory.getGreetCounter(name)
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        const results = await pool.query("select * from greeting_test where name = $1", ["Mdu"]);
-        assert.equal("Mdu", results.rows[0].name);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        const results = await pool.query("select * from greeting_test where name = $1", ["siphiwe"]);
+        assert.equal("siphiwe", results.rows[0].name);
     });
 
     it("it should be able to counting per person", async function() {
-        const name = "Mdu";
+        const name = "siphiwe";
         await greetFactory.perPerson(name)
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        await pool.query(INSERT_QUERY, ["Mdu"]);
-        const results = await pool.query(`select name from greeting_test where name = $1`, ["Mdu"]);
-        assert.equal("Mdu", results.rows[0].name);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        await pool.query(INSERT_QUERY, ["siphiwe"]);
+        const results = await pool.query(`select name from greeting_test where name = $1`, ["siphiwe"]);
+        assert.equal("siphiwe", results.rows[0].name);
         //assert.equal(3, results.rows[0].counter);
 
 
