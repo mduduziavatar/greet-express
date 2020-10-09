@@ -1,4 +1,6 @@
-module.exports = function greetFactory() {
+module.exports = function greetFactory(stored) {
+
+    var userMappedData = stored || {};
     const pg = require("pg");
     const Pool = pg.Pool;
     const connectionString = process.env.DATABASE_URL || 'postgresql://mdu:pg123@localhost:5432/greetings';
@@ -13,6 +15,7 @@ module.exports = function greetFactory() {
         if (item === "") {
             return ""
         }
+        addedUser(item)
         switch (language) {
 
             case "english":
@@ -25,6 +28,16 @@ module.exports = function greetFactory() {
                 return ""
         }
 
+    }
+
+    function addedUser(userName) {
+        if (userMappedData[userName] === undefined) {
+            userMappedData[userName] = 0;
+        }
+    }
+
+    function getCounter() {
+        return Object.keys(userMappedData).length;
     }
 
     async function addToDatabase(name) {
@@ -65,6 +78,8 @@ module.exports = function greetFactory() {
         greetUser,
         getGreetCounter,
         perPerson,
-        reset
+        reset,
+        addedUser,
+        getCounter
     }
 }

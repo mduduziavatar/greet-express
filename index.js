@@ -30,16 +30,16 @@ app.get('/', async function(req, res) {
 //greet app setup
 app.post("/greet", async function(req, res) {
     const name = req.body.textItem;
-    const language = req.body.selector
-    const greetedUsers = greetFactory.greetUser(name, language)
-    await greetFactory.addToDatabase(name)
-    const count = greetFactory.getGreetCounter();
+    const language = req.body.selector;
+    const greetedUsers = await greetFactory.greetUser(name, language);
+    await greetFactory.addToDatabase(name);
+    var count = await greetFactory.getGreetCounter(name);
     if (name === "" && language === undefined) {
         req.flash("errors", "please enter a name and select a language ");
     } else if (name === "") {
-        req.flash("errors", "please enter a name!")
+        req.flash("errors", "please enter a name!");
     } else if (language === undefined) {
-        req.flash("errors", "please select a language ")
+        req.flash("errors", "please select a language ");
     }
 
     console.log(greetedUsers);

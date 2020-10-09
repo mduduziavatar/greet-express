@@ -1,9 +1,8 @@
 <div class="main-body">
     <form action="/" method="GET">
-        <button id="homeBtn" class="homeButton">Home</button>
-    </form>
+    <button id="homeBtn" class="homeButton">Home</button>
+</form>
     {{#each name}}
     <h2><a href="/counter/{{this.name}}">{{this.name}}</a></h2>
     {{/each}}
 </div>
-
