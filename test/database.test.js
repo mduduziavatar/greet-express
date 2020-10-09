@@ -6,7 +6,7 @@ describe("the greetings_app database test", function() {
 
     const pg = require("pg");
     const Pool = pg.Pool;
-    const connectionString = process.env.DATABASE_URL || 'postgresql://mdu:pg123@localhost:5432/greeting_test';
+    const connectionString = process.env.DATABASE_URL || 'postgresql://siphiwe:pg123@localhost:5432/greeting_test';
     const pool = new Pool({
         connectionString
     });
