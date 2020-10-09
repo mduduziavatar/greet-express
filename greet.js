@@ -3,19 +3,19 @@ module.exports = function greetFactory(stored) {
     var userMappedData = stored || {};
     const pg = require("pg");
     const Pool = pg.Pool;
-    const connectionString = process.env.DATABASE_URL || 'postgresql://mdu:pg123@localhost:5432/greetings';
+    const connectionString = process.env.DATABASE_URL || 'postgresql://siphiwe:pg123@localhost:5432/greetings';
     const pool = new Pool({
         connectionString
     });
 
-    async function greetUser(name, language) {
+     function greetUser(name, language) {
         var regularExpression = /[^A-Za-z]/g;
         var lettersOnly = name.replace(regularExpression, "")
         var item = lettersOnly.charAt(0).toUpperCase() + lettersOnly.slice(1).toLowerCase()
         if (item === "") {
             return ""
         }
-        addedUser(item)
+       addedUser(item)
         switch (language) {
 
             case "english":
