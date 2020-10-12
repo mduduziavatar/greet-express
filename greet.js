@@ -1,12 +1,7 @@
-module.exports = function greetFactory() {
+module.exports = function greetFactory(pool) {
 
     var userMappedData = {};
-    const pg = require("pg");
-    const Pool = pg.Pool;
-    const connectionString = process.env.DATABASE_URL || 'postgresql://mdu:pg123@localhost:5432/greetings';
-    const pool = new Pool({
-        connectionString
-    });
+
 
 
     function greetUser(name, language) {

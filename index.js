@@ -3,7 +3,6 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const GreetFactoryFunction = require('./greet');
 const app = express();
-const greetFactory = GreetFactoryFunction();
 // app flash setups 
 const flash = require('express-flash');
 const session = require('express-session')
@@ -16,6 +15,15 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: true }
 }))
+
+const pg = require("pg");
+const Pool = pg.Pool;
+const connectionString = process.env.DATABASE_URL || 'postgresql://mdu:pg123@localhost:5432/greetings';
+const pool = new Pool({
+    connectionString
+});
+
+const greetFactory = GreetFactoryFunction(pool);
 
 
 app.use(flash());
