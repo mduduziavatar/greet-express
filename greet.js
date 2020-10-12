@@ -1,6 +1,6 @@
-module.exports = function greetFactory(stored) {
+module.exports = function greetFactory() {
 
-    var userMappedData = stored || {};
+    var userMappedData = {};
     const pg = require("pg");
     const Pool = pg.Pool;
     const connectionString = process.env.DATABASE_URL || 'postgresql://mdu:pg123@localhost:5432/greetings';
@@ -8,7 +8,8 @@ module.exports = function greetFactory(stored) {
         connectionString
     });
 
-    async function greetUser(name, language) {
+
+    function greetUser(name, language) {
         var regularExpression = /[^A-Za-z]/g;
         var lettersOnly = name.replace(regularExpression, "")
         var item = lettersOnly.charAt(0).toUpperCase() + lettersOnly.slice(1).toLowerCase()
@@ -55,6 +56,7 @@ module.exports = function greetFactory(stored) {
         const count = await pool.query(`select count(*) as count from greetings`)
         return count.rows[0].count;
     }
+
 
     async function getAllUsers() {
         // this is for db 

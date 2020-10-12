@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const GreetFactoryFunction = require('./greet');
 const app = express();
 const greetFactory = GreetFactoryFunction();
-const PORT = process.env.PORT || 3008;
 // app flash setups 
 const flash = require('express-flash');
 const session = require('express-session')
@@ -17,6 +16,8 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: true }
 }))
+
+
 app.use(flash());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,14 +33,16 @@ app.post("/greet", async function(req, res) {
     const name = req.body.textItem;
     const language = req.body.selector;
     const greetedUsers = await greetFactory.greetUser(name, language);
-    await greetFactory.addToDatabase(name);
-    var count = await greetFactory.getGreetCounter(name);
+
     if (name === "" && language === undefined) {
         req.flash("errors", "please enter a name and select a language ");
     } else if (name === "") {
         req.flash("errors", "please enter a name!");
     } else if (language === undefined) {
         req.flash("errors", "please select a language ");
+    } else {
+        await greetFactory.addToDatabase(name);
+        var count = await greetFactory.getGreetCounter(name);
     }
 
     console.log(greetedUsers);
@@ -72,6 +75,8 @@ app.get('/reset', async function(req, res) {
     var reset = await greetFactory.reset()
     res.render('index')
 });
+
+const PORT = process.env.PORT || 3008;
 
 app.listen(PORT, function() {
     console.log('App starting on port', PORT);
