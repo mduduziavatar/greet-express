@@ -2,8 +2,6 @@ module.exports = function greetFactory(pool) {
 
     var userMappedData = {};
 
-
-
     function greetUser(name, language) {
         var regularExpression = /[^A-Za-z]/g;
         var lettersOnly = name.replace(regularExpression, "")

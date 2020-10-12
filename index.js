@@ -17,6 +17,7 @@ app.use(session({
 }))
 
 const pg = require("pg");
+const Routes = require('./routes');
 const Pool = pg.Pool;
 const connectionString = process.env.DATABASE_URL || 'postgresql://mdu:pg123@localhost:5432/greetings';
 const pool = new Pool({
@@ -24,7 +25,7 @@ const pool = new Pool({
 });
 
 const greetFactory = GreetFactoryFunction(pool);
-
+const routes = Routes(greetFactory)
 
 app.use(flash());
 // parse application/x-www-form-urlencoded
@@ -32,58 +33,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 //sending back home
-app.get('/', async function(req, res) {
-    res.render('index');
-});
+app.get('/', routes.index);
 
 //greet app setup
-app.post("/greet", async function(req, res) {
-    const name = req.body.textItem;
-    const language = req.body.selector;
-    const greetedUsers = greetFactory.greetUser(name, language);
-    if (name === "" && language === undefined) {
-        req.flash("errors", "please enter a name and select a language ");
-    } else if (name === "") {
-        req.flash("errors", "please enter a name!");
-    } else if (language === undefined) {
-        req.flash("errors", "please select a language ");
-    } else {
-        await greetFactory.addToDatabase(name);
-        var count = await greetFactory.getGreetCounter(name);
-    }
+app.post("/greet", routes.greet);
 
+app.get('/data', routes.greeted);
 
+app.get('/counter/:name', routes.counter);
 
-    console.log(greetedUsers);
-    res.render('index', {
-        txtBox: await greetedUsers,
-        counter: count
-    });
-});
-
-app.get('/data', async function(req, res) {
-    var name = req.params.name;
-
-    var data = {
-        name: await greetFactory.getAllUsers(name),
-    }
-
-    res.render('data', data);
-});
-
-app.get('/counter/:name', async function(req, res) {
-    var name = req.params.name;
-    var count = await greetFactory.perPerson(name)
-    res.render('counter', {
-        name: name,
-        counter: count
-    })
-});
-
-app.get('/reset', async function(req, res) {
-    var reset = await greetFactory.reset()
-    res.render('index')
-});
+app.get('/reset', routes.reset);
 
 
 const PORT = process.env.PORT || 3008;

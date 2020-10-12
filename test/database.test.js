@@ -27,8 +27,6 @@ describe("The getNames function", function() {
         await greetFactory.addToDatabase(name)
 
         var allUsers = await greetFactory.getAllUsers()
-
-        // const results = await pool.query(`select count( * ) from greetings `);
         assert.deepEqual([{ name: "Mdu" }], allUsers);
     });
 
@@ -37,14 +35,10 @@ describe("The getNames function", function() {
         const name2 = "sphiwe";
         const name3 = "kagiso";
         const name4 = "marko";
-
-
         await greetFactory.addToDatabase(name2)
         await greetFactory.addToDatabase(name3)
         await greetFactory.addToDatabase(name4)
         var allUsers = await greetFactory.getAllUsers()
-
-        // const results = await pool.query(`select count( * ) from greetings `);
         assert.deepEqual([{
             name: "sphiwe"
         }], [{
@@ -76,7 +70,6 @@ describe("The getNames function", function() {
         await greetFactory.addToDatabase(name);
         await greetFactory.addToDatabase(name);
         await greetFactory.addToDatabase(name);
-
         var allUsers = await greetFactory.getAllUsers();
         assert.deepEqual([{
             name: "Mdu"
