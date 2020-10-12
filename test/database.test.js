@@ -92,6 +92,11 @@ describe("The getNames function", function() {
             name: "Mdu"
         }], allUsers);
     });
+
+    it("should be able to to reset the db", async function() {
+        var allUsers = await greetFactory.reset();
+        assert.deepEqual([], allUsers);
+    });
     after(function() {
         pool.end();
     })
